@@ -1,0 +1,36 @@
+#include <Arduino.h>
+#include <TM1637TinyDisplay6.h>
+
+// Define Digital Pins
+#define CLK 3
+#define DIO 4
+
+const int buttonPin = 2;
+
+int buttonState = 0;
+int count_value = 0;
+int prestate = 0;
+
+// Initialize TM1637TinyDisplay
+TM1637TinyDisplay6 display(CLK, DIO);
+
+void setup() {
+  display.setBrightness(0x0f);
+
+  pinMode(buttonPin, INPUT);
+}
+
+void loop() {
+ 
+  buttonState = digitalRead(buttonPin);
+  
+//+1 per press
+  if (buttonState == HIGH && prestate == 0) {
+    count_value++;
+    prestate = 1;
+      display.showNumber(count_value);
+      delay(300);
+  } else {
+    prestate = 0;
+    }
+}  
